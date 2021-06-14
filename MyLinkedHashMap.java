@@ -1,8 +1,9 @@
+import java.security.Key;
 import java.util.ArrayList;
 
 public class MyLinkedHashMap<K,V> {
     private final  int numBuckets;
-    ArrayList<MyLinkedList<k>> myBucketsArray;
+    ArrayList<MyLinkdList<k>> myBucketsArray;
 
     public MyLinkedHashMap(){
         this.numBuckets = 10;
@@ -47,5 +48,25 @@ public class MyLinkedHashMap<K,V> {
             myMapNode.setValue(value);
         }
     }
-}
 
+    public INode remove(K dKey) {
+        int index = this.getBucketIndex(dKey);
+        MyLinkdList<k> myLinkedList = this.myBucketsArray.get(index);
+        if(myLinkedList == null) return null;
+        MyMapNode<K,V> previousNode = (MyMapNode<K,V>) myLinkedList.head;
+        MyMapNode<K,V> currentNode = (MyMapNode<K,V>) myLinkedList.head;
+        INode tempNode=null;
+        if(currentNode != null && currentNode.getKey().equals(dKey)) {
+            tempNode=currentNode;
+            myLinkedList.head=currentNode.getNext();
+            return tempNode;
+        }
+        while(currentNode != null && !(currentNode.getKey().equals(dKey))) {
+            previousNode=currentNode;
+            currentNode= (MyMapNode<K,V>) currentNode.getNext();
+        }
+        tempNode=currentNode;
+        previousNode.setNext(currentNode.getNext());
+        return tempNode;
+    }
+}
